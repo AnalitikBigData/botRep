@@ -8,7 +8,7 @@ const Number = function(num){
 const getMessage = function(x){
     let y = 21;
     const func = function(){
-        if(confirm('Игра окончена')===false){
+        if(x !== 0){
             if(x > 100){
                 console.log('Загаданное число меньше');
                 x = +prompt('Загаданное число меньше. Введите число ещё раз');
@@ -25,18 +25,32 @@ const getMessage = function(x){
             } 
 
             else if(x !== y ){
-                console.log('Неверно' +  ' x != ' + x + typeof(x));
-                x = +prompt('Неверно. Введите число ещё раз');
+                if(x > y){
+                    x = +prompt('Неверно. Число меньше. Введите число ещё раз');
+                }
+                else{
+                    x = +prompt('Неверно. Число больше. Введите число ещё раз');
+                }
+                //console.log('Неверно' +  ' x != ' + x + typeof(x));
+                //x = +prompt('Неверно. Введите число ещё раз');
                 func();
             }
             else if(x === y){
+                alert('Поздравляю, Вы угадали!!! ' + x);
                 console.log('Поздравляю, Вы угадали!!! ' + x);
             }
         }
         else {
-            alert('Игра окончена');
-            console.log('Игра окончена');
+            if(confirm('Хотите закончить игру?') === true){
+                alert('Игра окончена');
+                console.log('Игра окончена');
+            }
+            else{
+                x = +prompt('Введите число');
+                func();
+            }
         }
+
     }
     func();
 }
