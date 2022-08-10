@@ -4,54 +4,83 @@ alert('Загадывание случайного числа от 1 до 100');
 const Number = function(num){
     return !isNaN(parseFloat(num)) && isFinite(num);
 }
+const emptyString = function(str){
+    if(str.trim().length === 0){
+        return true;
+    }
+    else return false;
+}
+const getRandomInt = function(num){
+    return Math.floor(Math.random() * num) + 1;
+}
 
-const getMessage = function(x){
-    let y = 21;
-    const func = function(){
-        if(x !== 0){
-            if(x > 100){
-                console.log('Загаданное число меньше');
-                x = +prompt('Загаданное число меньше. Введите число ещё раз');
-                func();
+
+const getMessage = function(ans){
+    let number = getRandomInt(100);
+    console.log(number);
+    let numberOfAttempts = 10; 
+    const startGame = function(answer){
+        while(!Number(+answer)){
+            answer = prompt('Введи число! Введите число ещё раз');
+            if(answer === null) break;
+        }
+        if(answer === null){
+            alert('Игра окончена');
+            return;
+        }
+        if(numberOfAttempts > 0){
+            numberOfAttempts--;
+            if(answer > number){
+                let newAnswer = prompt('Загаданное число меньше, осталось попыток ' + numberOfAttempts +' Введите число ещё раз');
+                if(newAnswer === null){
+                    alert('Игра окончена');
+                    return;
+                }
+                startGame(+newAnswer);
             }
-            else if(x < 1){
-                console.log('Загаданное число больше');
-                x = +prompt('Загаданное число больше. Введите число ещё раз');
-                func();
-            } else if(!Number(x)){
-                console.log('Введи число!'+  ' x = ' + x + ' '+ typeof(x));
-                x = +prompt('Введи число! Введите число ещё раз');
-                func();
-            } 
-
-            else if(x !== y ){
-                if(x > y){
-                    x = +prompt('Неверно. Число меньше. Введите число ещё раз');
+            else if(answer < number){
+                let newAnswer = prompt('Загаданное число больше, осталось попыток ' + numberOfAttempts +' Введите число ещё раз');
+                if(newAnswer === null){
+                    alert('Игра окончена');
+                    return;
+                }
+                startGame(+newAnswer);
+            }
+            if(answer === number){
+                alert('Поздравляю, Вы угадали!!! ' + answer);
+                let question = confirm('Хотите сыграть ещё');
+                if(question === true){
+                    numberOfAttempts = 10;
+                    let newAnswer = prompt('Введите число');
+                    if(newAnswer === null){
+                        alert('Игра окончена');
+                        return;
+                    }
+                    getMessage(+newAnswer);
                 }
                 else{
-                    x = +prompt('Неверно. Число больше. Введите число ещё раз');
+                    alert('Игра окончена');
                 }
-                //console.log('Неверно' +  ' x != ' + x + typeof(x));
-                //x = +prompt('Неверно. Введите число ещё раз');
-                func();
-            }
-            else if(x === y){
-                alert('Поздравляю, Вы угадали!!! ' + x);
-                console.log('Поздравляю, Вы угадали!!! ' + x);
             }
         }
-        else {
-            if(confirm('Хотите закончить игру?') === true){
+        else{
+            let question = confirm('Попытки закончились, хотите сыграть еще?');
+            if (question === true){
+                numberOfAttempts = 10;
+                startGame(+ans);
+            }
+            else{
                 alert('Игра окончена');
                 console.log('Игра окончена');
             }
-            else{
-                x = +prompt('Введите число');
-                func();
-            }
         }
-
     }
-    func();
+    startGame(ans);
 }
-console.log(getMessage(+prompt('Введите число')));
+let start = prompt('Введите число');
+if(start){
+    getMessage(+start);
+}
+else{
+    alert('Игра окончена');
+}
